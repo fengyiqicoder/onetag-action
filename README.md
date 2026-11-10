@@ -153,7 +153,7 @@ key: ${{ vars.ONETAG_KEY }}
 
 ## How it works
 
-1. Runs [`static-llms-txt@0.1.0`](https://www.npmjs.com/package/static-llms-txt) with `npx` on `path`. It reads the main content of every built page (skipping navigation, footers, scripts, `noindex` pages, redirects and 404 pages) and writes `llms.txt` and `llms-full.txt`. It leaves an `llms.txt` it did not write alone.
+1. Runs [`static-llms-txt@0.1.1`](https://www.npmjs.com/package/static-llms-txt) with `npx` on `path`. It reads the main content of every built page (skipping navigation, footers, scripts, `noindex` pages, redirects and 404 pages) and writes `llms.txt` and `llms-full.txt`. It leaves an `llms.txt` it did not write alone.
 2. Calls the same package's `inject()` to add this tag before `</body>` of every page:
 
    ```html

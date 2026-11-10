@@ -1,5 +1,5 @@
 // Adds the Ask AI script tag to every built page through static-llms-txt's inject().
-// Started by run.sh with `npx --package static-llms-txt@0.1.0`, which puts the package's
+// Started by run.sh with `npx --package static-llms-txt@0.1.1`, which puts the package's
 // bin folder on PATH; the package itself sits next to that folder.
 "use strict";
 const fs = require("node:fs");

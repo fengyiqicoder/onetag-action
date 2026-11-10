@@ -2,7 +2,7 @@
 # Runs inside the composite action. Inputs arrive as INPUT_* env variables (see action.yml).
 set -euo pipefail
 
-PKG="static-llms-txt@0.1.0"
+PKG="static-llms-txt@0.1.1"
 HERE="${GITHUB_ACTION_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
 export npm_config_registry="https://registry.npmjs.org"
 export npm_config_update_notifier=false
