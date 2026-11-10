@@ -1,0 +1,81 @@
+name: "Ask AI and llms.txt for static sites"
+description: "Write llms.txt and llms-full.txt into a built static site and add an Ask AI box to every page. Runs after the build, before upload."
+author: "OneTag AI"
+branding:
+  icon: "message-circle"
+  color: "blue"
+
+inputs:
+  path:
+    description: "Folder with the built site, for example _site, public, dist or site."
+    required: true
+  site:
+    description: "Public base URL of the site, for example https://you.github.io/repo. Makes every link in the llms files absolute."
+    required: false
+    default: ""
+  key:
+    description: "OneTag AI site key (public by design). Falls back to the ONETAG_KEY env variable, then to a demo key that answers on localhost only."
+    required: false
+    default: ""
+  ask-ai:
+    description: "Add the Ask AI script tag to every page."
+    required: false
+    default: "true"
+  llms:
+    description: "Write llms.txt and llms-full.txt. Set to false if another tool already writes them."
+    required: false
+    default: "true"
+  label:
+    description: "Text on the Ask AI button."
+    required: false
+    default: ""
+  position:
+    description: "Where the box sits: auto, float, left or none."
+    required: false
+    default: ""
+  color:
+    description: "Accent color as hex without #, for example 0f766e."
+    required: false
+    default: ""
+  lang:
+    description: "Interface language: en, zh-CN or zh-TW."
+    required: false
+    default: ""
+  exclude:
+    description: "Files to skip, as globs relative to path. One per line or comma separated, for example tags/**."
+    required: false
+    default: ""
+  node-version:
+    description: "Install this Node.js version first with actions/setup-node. Empty uses the Node.js already on the runner (18 or later)."
+    required: false
+    default: ""
+
+outputs:
+  pages:
+    description: "Number of pages the Ask AI script tag was added to in this run."
+    value: ${{ steps.onetag.outputs.pages }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      if: inputs.node-version != ''
+      uses: actions/setup-node@v7
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Write llms.txt and add the Ask AI box
+      id: onetag
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_SITE: ${{ inputs.site }}
+        INPUT_KEY: ${{ inputs.key }}
+        INPUT_ASK_AI: ${{ inputs.ask-ai }}
+        INPUT_LLMS: ${{ inputs.llms }}
+        INPUT_LABEL: ${{ inputs.label }}
+        INPUT_POSITION: ${{ inputs.position }}
+        INPUT_COLOR: ${{ inputs.color }}
+        INPUT_LANG: ${{ inputs.lang }}
+        INPUT_EXCLUDE: ${{ inputs.exclude }}
+      run: bash "$GITHUB_ACTION_PATH/run.sh"

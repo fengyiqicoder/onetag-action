@@ -1,0 +1,99 @@
+name: test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  no-key:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build the fixture site
+        run: cp -R test/fixture _site
+      - name: Run the action
+        id: onetag
+        uses: ./
+        with:
+          path: _site
+          site: https://example.com
+          exclude: tags/**
+      - name: Check the output
+        run: |
+          test/check.sh _site both
+          test "${{ steps.onetag.outputs.pages }}" = "2"
+      - name: Run it again (changes nothing)
+        id: again
+        uses: ./
+        with:
+          path: _site
+          site: https://example.com
+          exclude: tags/**
+      - name: Check again
+        run: |
+          test/check.sh _site both
+          test "${{ steps.again.outputs.pages }}" = "0"
+
+  with-key-and-options:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cp -R test/fixture _site
+      - uses: ./
+        with:
+          path: _site
+          site: https://example.com
+          key: ot_test000000000000000000000
+          label: Ask the docs
+          position: left
+          color: 0f766e
+          lang: zh-CN
+          exclude: |
+            tags/**
+          node-version: 20
+      - run: |
+          test/check.sh _site both ot_test000000000000000000000
+          grep -q 'data-label="Ask the docs"' _site/index.html
+          grep -q 'data-position="left"' _site/index.html
+          grep -q 'data-color="0f766e"' _site/index.html
+          grep -q 'data-lang="zh-CN"' _site/index.html
+
+  key-from-env:
+    runs-on: ubuntu-latest
+    env:
+      ONETAG_KEY: ot_env0000000000000000000000
+    steps:
+      - uses: actions/checkout@v7
+      - run: cp -R test/fixture _site
+      - uses: ./
+        with:
+          path: _site
+          site: https://example.com
+          exclude: tags/**
+      - run: test/check.sh _site both ot_env0000000000000000000000
+
+  llms-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cp -R test/fixture _site
+      - uses: ./
+        with:
+          path: _site
+          site: https://example.com
+          ask-ai: false
+          exclude: tags/**
+      - run: test/check.sh _site llms-only
+
+  ask-ai-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cp -R test/fixture _site
+      - uses: ./
+        with:
+          path: _site
+          llms: false
+          exclude: tags/**
+      - run: test/check.sh _site ask-only
