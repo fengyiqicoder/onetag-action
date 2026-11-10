@@ -23,7 +23,7 @@ else
 fi
 
 for f in "$DIR/index.html" "$DIR/guide/index.html"; do
-  n=$(grep -o '<script[^>]*/ask-docs\.js' "$f" | wc -l | tr -d ' ')
+  n=$( (grep -o '<script[^>]*/ask-docs\.js' "$f" || true) | wc -l | tr -d ' ')
   if [ "$MODE" = "llms-only" ]; then
     [ "$n" = "0" ] || fail "$f has $n script tags, expected 0"
   else
