@@ -1,5 +1,5 @@
 name: "Ask AI and llms.txt for static sites"
-description: "Write llms.txt and llms-full.txt into a built static site and add an Ask AI box to every page. Runs after the build, before upload."
+description: Write llms.txt and llms-full.txt into your built static site and add an Ask AI box to every page.
 author: "OneTag AI"
 branding:
   icon: "message-circle"
