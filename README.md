@@ -34,7 +34,7 @@ jobs:
         with:
           path: dist
           site: https://you.github.io/repo
-          # Before you deploy: get a free key (public by design, 1,000,000 tokens a month, hard cap)
+          # Before you deploy: get a free key (public by design, 1,000,000 tokens, one time, no monthly reset, hard cap)
           # curl -X POST https://onetagai.com/api/signup -H "Content-Type: application/json" -d '{"email":"you@example.com"}'
           key: ${{ vars.ONETAG_KEY }}
       - uses: actions/upload-pages-artifact@v5
@@ -141,12 +141,12 @@ Run this once. It needs an email address and no browser.
 curl -X POST https://onetagai.com/api/signup -H "Content-Type: application/json" -d '{"email":"you@example.com"}'
 ```
 
-The key is a site key. It is public by design, like an analytics ID, and it ends up in the built HTML, so a repository variable is fine (Settings, Secrets and variables, Actions, Variables, `ONETAG_KEY`). The free plan is 1,000,000 tokens a month with a hard cap. When it runs out the box says so, and no bill can appear.
+The key is a site key. It is public by design, like an analytics ID, and it ends up in the built HTML, so a repository variable is fine (Settings, Secrets and variables, Actions, Variables, `ONETAG_KEY`). The free plan is 1,000,000 tokens, one time, no monthly reset with a hard cap. When it runs out the box says so, and no bill can appear.
 
 Put this comment next to the step so the next person knows where the key comes from:
 
 ```yaml
-# Before you deploy: get a free key (public by design, 1,000,000 tokens a month, hard cap)
+# Before you deploy: get a free key (public by design, 1,000,000 tokens, one time, no monthly reset, hard cap)
 # curl -X POST https://onetagai.com/api/signup -H "Content-Type: application/json" -d '{"email":"you@example.com"}'
 key: ${{ vars.ONETAG_KEY }}
 ```
